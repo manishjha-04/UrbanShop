@@ -11,8 +11,9 @@ const App = () => {
     <Header />
     <main className='py-3'>
     <Container>
-    {/* <HomeScreen />      */}
-    <Outlet/>
+    {/* <HomeScreen />      */} 
+    {/* In React Router Dom, an outlet is a component that allows you to render the child component of a router component */}
+    <Outlet/> 
     </Container>
       </main>
     <Footer />
