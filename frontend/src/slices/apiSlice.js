@@ -1,3 +1,5 @@
+//we could consider this apiSLice as the parent of all other api slice like product ,order and user
+
 import {createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import {BASE_URL} from '../constants';

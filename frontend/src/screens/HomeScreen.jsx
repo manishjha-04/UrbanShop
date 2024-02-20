@@ -1,26 +1,43 @@
 import React from 'react'
-import { useEffect ,useState } from 'react';
+// import { useEffect ,useState } from 'react';
 import { Row,Col } from 'react-bootstrap'
-import axios from 'axios';
+// import axios from 'axios';
 import Product from '../components/Product';
+import { useGetProductsQuery } from '../slices/prouctsApiSlice';
 
 
 const HomeScreen = () => {
 
-  const [products,setProducts] = useState([]);
+    const {data:products , isLoading , error} = useGetProductsQuery();
+  
 
-  useEffect(()=>
-  {
-    const fetchProducts = async () =>{
-      const {data} =  await axios.get('/api/products');
-      setProducts(data);
-    };
 
-    fetchProducts();
-  },[]);
+  // not need of using usestate and useeffect now or like maintaining the component state since we would be fetching data by the state using redux
+
+
+
+
+  // const [products,setProducts] = useState([]);
+
+  // useEffect(()=>
+  // {
+  //   const fetchProducts = async () =>{
+  //     const {data} =  await axios.get('/api/products');
+  //     setProducts(data);
+  //   };
+
+  //   fetchProducts();
+  // },[]);
 
   return (
     <>
+
+    {isLoading ? (
+      <h2>Loading ...</h2>
+    ) : error ? (
+      <div> {error?.data?.message || error.error}</div>
+    ) : ( 
+      <>
     <h1>Latest products</h1>
     <Row>
         {products.map((product) => (
@@ -30,9 +47,15 @@ const HomeScreen = () => {
             </Col>
         ))}
     </Row>
+    </>
+    )}
+
+
+
+
       
     </>
-  )
-}
+  );
+};
 
 export default HomeScreen
