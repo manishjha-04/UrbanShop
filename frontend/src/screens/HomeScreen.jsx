@@ -1,63 +1,46 @@
-import React from 'react'
-// import { useEffect ,useState } from 'react';
-import { Row,Col } from 'react-bootstrap'
-// import axios from 'axios';
+import { Row, Col } from 'react-bootstrap';
+import { Link, useParams } from 'react-router-dom';
 import Product from '../components/Product';
-import { useGetProductsQuery } from '../slices/prouctsApiSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import Paginate from '../components/Paginate';
+import ProductCarousel from '../components/ProductCarousel';
+import { useGetProductsQuery } from '../slices/productsApiSlice.js';
 
 
 const HomeScreen = () => {
 
-    const {data:products , isLoading , error} = useGetProductsQuery();
-  
+   const { keyword, pageNumber } = useParams();
+   const { data, isLoading, error } = useGetProductsQuery({ keyword, pageNumber });
 
-
-  // not need of using usestate and useeffect now or like maintaining the component state since we would be fetching data by the state using redux
-
-
-
-
-  // const [products,setProducts] = useState([]);
-
-  // useEffect(()=>
-  // {
-  //   const fetchProducts = async () =>{
-  //     const {data} =  await axios.get('/api/products');
-  //     setProducts(data);
-  //   };
-
-  //   fetchProducts();
-  // },[]);
-
-  return (
-    <>
-
-    {isLoading ? (
-      <Loader />
-    ) : error ? (
-      <Message variant='danger'> {error?.data?.message || error.error}</Message>
-    ) : ( 
+   return (
       <>
-    <h1>Latest products</h1>
-    <Row>
-        {products.map((product) => (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                {/* <h1>{product.name}</h1> ....using below method to pass props in product component*/}
-                <Product product={product} /> 
-            </Col>
-        ))}
-    </Row>
-    </>
-    )}
-
-
-
-
-      
-    </>
-  );
+         {!keyword ? <ProductCarousel /> : (
+            <Link to='/' className='btn btn-light mb-3'>Go Back</Link>
+         )}
+         {isLoading ? (
+            <Loader />
+         ) : (
+            error ? (
+               <Message variant='danger'>
+                  { error?.data?.message || error.error }
+               </Message>
+            ) : (
+               <>
+                  <h1>Latest Products</h1>
+                  <Row>
+                     {data.products.map(product => (
+                        <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                           <Product product={product} />
+                        </Col> 
+                     ))}
+                  </Row>
+                  <Paginate pages={data.pages} page={data.page} keyword={keyword ? keyword : ''} />
+               </> 
+            )
+         )}
+      </>
+   );
 };
 
-export default HomeScreen
+export default HomeScreen;

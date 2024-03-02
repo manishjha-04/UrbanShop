@@ -1,13 +1,10 @@
-//we could consider this apiSLice as the parent of all other api slice like product ,order and user
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { BASE_URL } from '../constants';
 
-import {createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+const baseQuery = fetchBaseQuery({ baseUrl: BASE_URL });
 
-import {BASE_URL} from '../constants';
-
-const baseQuery = fetchBaseQuery({baseUrl : BASE_URL});
-
-export const apiSlice = createApi ({
-    baseQuery,
-    tagTypes: ['Product','Order','User'],
-    endpoints:(builder)=>({}),
+export const apiSlice = createApi({
+   baseQuery,
+   tagTypes: ['Product', 'Order', 'User'],
+   endpoints: (builder) => ({}),
 });
